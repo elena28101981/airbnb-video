@@ -14,7 +14,6 @@ import Calendar from '../inputs/Calendar';
 import Counter from '../inputs/Counter';
 import CountrySelect, { CountrySelectValue } from '../inputs/CountrySelect';
 import Heading from '../Heading';
-import Search from '../navbar/Search';
 
 enum STEPS {
   LOCATION = 0,
@@ -24,10 +23,11 @@ enum STEPS {
 
 const SearchModal = () => {
   const router = useRouter();
-  const params = useSearchParams();
   const searchModal = useSearchModal();
+  const params = useSearchParams();
 
   const [step, setStep] = useState(STEPS.LOCATION);
+
   const [location, setLocation] = useState<CountrySelectValue>();
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
@@ -184,12 +184,12 @@ const SearchModal = () => {
   return (
     <Modal
       isOpen={searchModal.isOpen}
-      onClose={searchModal.onClose}
-      onSubmit={onSubmit}
       title="Filters"
       actionLabel={actionLabel}
+      onSubmit={onSubmit}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
+      onClose={searchModal.onClose}
       body={bodyContent}
     />
   );

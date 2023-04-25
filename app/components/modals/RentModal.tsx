@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 import useRentModal from '@/app/hooks/useRentModal';
+
 import Modal from './Modal';
 import Counter from '../inputs/Counter';
 import CategoryInput from '../inputs/CategoryInput';
@@ -30,9 +31,8 @@ const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
 
-  const [step, setStep] = useState(STEPS.CATEGORY);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState(STEPS.CATEGORY);
 
   const {
     register,
@@ -55,8 +55,8 @@ const RentModal = () => {
     },
   });
 
-  const category = watch('category');
   const location = watch('location');
+  const category = watch('category');
   const guestCount = watch('guestCount');
   const roomCount = watch('roomCount');
   const bathroomCount = watch('bathroomCount');
@@ -134,9 +134,13 @@ const RentModal = () => {
       />
       <div
         className="
-        grid grid-cols-3 md:grid-cols-2
-        gap-3 max-h-[50vh] overflow-auto
-      "
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
       >
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
@@ -164,7 +168,6 @@ const RentModal = () => {
           onChange={(value) => setCustomValue('location', value)}
         />
         <Map center={location?.latlng} />
-        Location step
       </div>
     );
   }
@@ -177,10 +180,10 @@ const RentModal = () => {
           subtitle="What amenitis do you have?"
         />
         <Counter
+          onChange={(value) => setCustomValue('guestCount', value)}
+          value={guestCount}
           title="Guests"
           subtitle="How many guests do you allow?"
-          value={guestCount}
-          onChange={(value) => setCustomValue('guestCount', value)}
         />
         <hr />
         <Counter
@@ -266,13 +269,14 @@ const RentModal = () => {
 
   return (
     <Modal
+      disabled={isLoading}
       isOpen={rentModal.isOpen}
-      onClose={rentModal.onClose}
-      onSubmit={handleSubmit(onSubmit)}
+      title="Airbnb your home!"
       actionLabel={actionLabel}
+      onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-      title="Airbnb your home!"
+      onClose={rentModal.onClose}
       body={bodyContent}
     />
   );
